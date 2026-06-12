@@ -7,6 +7,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <fonts/arial_font.h>
+#include <random>
+#include <format>
 
 #include FT_FREETYPE_H
 
@@ -248,8 +250,22 @@ int main()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        renderText("Hello OpenGL!", 5.0f, 20.0f, 0.5f, glm::vec3(1.0f, 1.0f, 1.0f), 200, 100);
-        renderText("Hello OpenGLES!", 5.0f, 50.0f, 0.5f, glm::vec3(1.0f, 1.0f, 1.0f), 200, 100);
+        std::random_device rd;
+
+        std::mt19937 gen(rd());
+
+        std::uniform_int_distribution<> distr(1, 100);
+
+        glfwPollEvents();
+
+        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        auto frmt = std::format("fps: {}", distr(rd));
+        auto frmt_cpu = std::format("cpu: {}%", distr(rd));
+
+        renderText(frmt, 5.0f, 20.0f, 0.5f, glm::vec3(1.0f, 1.0f, 1.0f), 200, 100);
+        renderText(frmt_cpu, 5.0f, 50.0f, 0.5f, glm::vec3(1.0f, 1.0f, 1.0f), 200, 100);
         glfwSwapBuffers(window);
     }
 
