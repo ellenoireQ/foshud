@@ -6,6 +6,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <fonts/arial_font.h>
+
 #include FT_FREETYPE_H
 
 struct Character
@@ -187,7 +189,7 @@ int main()
     }
 
     FT_Face face;
-    if (FT_New_Face(ft, "fonts/arial.ttf", 0, &face))
+    if (FT_New_Memory_Face(ft, fonts_arial_ttf, fonts_arial_ttf_len, 0, &face))
     {
         std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
         return -1;

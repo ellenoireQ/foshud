@@ -7,19 +7,19 @@ project('foshud', ['c', 'cpp'],
 
 glfw_dep = dependency('glfw3')
 
-glad_dir = include_directories('glad/include')
+utils_dir = include_directories(['glad/include', 'fonts/'])
 
 glad_src = files('glad/src/glad.c') 
 
 freetype_dep = dependency('freetype2', required : true)
 
-glad_dep = declare_dependency(
-  include_directories: glad_dir,
+utils_dep = declare_dependency(
+  include_directories: utils_dir,
   sources: glad_src,
   dependencies: freetype_dep,
 )
 
 executable('foshud',
   'main.cpp',
-  dependencies : [glad_dep, glfw_dep]
+  dependencies : [utils_dep, glfw_dep]
 )
