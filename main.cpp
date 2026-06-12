@@ -119,19 +119,20 @@ void renderText(std::string text, float x, float y, float scale, glm::vec3 color
         Character ch = Characters[c];
 
         float xpos = x + ch.Bearing.x * scale;
-        float ypos = y - (ch.Size.y - ch.Bearing.y) * scale;
+        float ypos = y + (ch.Size.y - ch.Bearing.y) * scale;
 
         float w = ch.Size.x * scale;
         float h = ch.Size.y * scale;
 
         float vertices[6][4] = {
-            {xpos, ypos + h, 0.0f, 1.0f},
-            {xpos, ypos, 0.0f, 0.0f},
-            {xpos + w, ypos, 1.0f, 0.0f},
+            {xpos, ypos - h, 0.0f, 0.0f}, // top-left
+            {xpos, ypos, 0.0f, 1.0f},     // bottom-left
+            {xpos + w, ypos, 1.0f, 1.0f}, // bottom-right
 
-            {xpos, ypos + h, 0.0f, 1.0f},
-            {xpos + w, ypos, 1.0f, 0.0f},
-            {xpos + w, ypos + h, 1.0f, 1.0f}};
+            {xpos, ypos - h, 0.0f, 0.0f},    // top-left
+            {xpos + w, ypos, 1.0f, 1.0f},    // bottom-right
+            {xpos + w, ypos - h, 1.0f, 0.0f} // top-right
+        };
 
         glBindTexture(GL_TEXTURE_2D, ch.TextureID);
         glBindBuffer(GL_COPY_WRITE_BUFFER, VBO);
@@ -158,7 +159,7 @@ int main()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    GLFWwindow *window = glfwCreateWindow(150, 50, "LearnOpenGL Window", NULL, NULL);
+    GLFWwindow *window = glfwCreateWindow(200, 100, "LearnOpenGL Window", NULL, NULL);
     if (window == NULL)
     {
         std::cerr << "Failed to create GLFW window" << std::endl;
@@ -173,7 +174,7 @@ int main()
         return -1;
     }
 
-    glViewport(0, 0, 100, 50);
+    glViewport(0, 0, 200, 100);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -245,7 +246,8 @@ int main()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        renderText("Hello OpenGL!", 5.0f, 20.0f, 0.5f, glm::vec3(1.0f, 1.0f, 1.0f), 150, 50);
+        renderText("Hello OpenGL!", 5.0f, 20.0f, 0.5f, glm::vec3(1.0f, 1.0f, 1.0f), 200, 100);
+        renderText("Hello OpenGLES!", 5.0f, 50.0f, 0.5f, glm::vec3(1.0f, 1.0f, 1.0f), 200, 100);
         glfwSwapBuffers(window);
     }
 
